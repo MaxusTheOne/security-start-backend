@@ -1,9 +1,12 @@
-package dat3.rename_me.configuration;
+package dat3.security_demo.configuration;
 
 import dat3.security.entity.Role;
 import dat3.security.entity.UserWithRoles;
 import dat3.security.repository.RoleRepository;
 import dat3.security.repository.UserWithRolesRepository;
+import dat3.security_demo.entity.SpecialUser;
+import dat3.security_demo.repository.SpecialUserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,6 +40,9 @@ public class SetupDevUsers implements ApplicationRunner {
         roleRepository.save(new Role("ADMIN"));
     }
 
+    @Autowired
+    SpecialUserRepository specialUserRepository;
+
      /*****************************************************************************************
      IMPORTANT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
      NEVER  COMMIT/PUSH CODE WITH DEFAULT CREDENTIALS FOR REAL
@@ -66,5 +72,10 @@ public class SetupDevUsers implements ApplicationRunner {
         userWithRolesRepository.save(user2);
         userWithRolesRepository.save(user3);
         userWithRolesRepository.save(user4);
+        SpecialUser specialUser =
+                new SpecialUser("specialUser",pwEncoder.encode(passwordUsedByAll),"s@a.dk","Anders","Hansen","Lyngby vej 23","2800","Lyngby");
+        specialUser.addRole(roleUser);
+        specialUserRepository.save(specialUser);
+
     }
 }
